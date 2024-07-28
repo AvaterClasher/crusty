@@ -1,6 +1,9 @@
-use std::{fs::File, io::{Error, Read}};
+use std::{
+    fs::File,
+    io::{Error, Read},
+};
 
-use crusty::lexer::lex;
+use crusty::{lexer::lex, parser::parse};
 
 fn main() {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
@@ -17,7 +20,9 @@ fn main() {
         }
     };
 
-    println!("{:#?}", tokens);
+    let ast = parse(&tokens);
+
+    println!("{:#?}", ast);
 }
 
 fn read_file(input: &str) -> Result<String, Error> {
