@@ -3,7 +3,7 @@ use std::{
     io::{Error, Read},
 };
 
-use crusty::{lexer::lex, parser::parse};
+use crusty::{generator::generate, lexer::lex, parser::parse};
 
 fn main() {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
@@ -21,8 +21,13 @@ fn main() {
     };
 
     let ast = parse(&tokens);
+    let generated = generate(&ast);
 
-    println!("{:#?}", ast);
+    println!(".intel_syntax noprefix");
+    println!(".global main");
+    println!("main:");
+
+    println!("{}", generated);
 }
 
 fn read_file(input: &str) -> Result<String, Error> {
